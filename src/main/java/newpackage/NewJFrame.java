@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -46,6 +48,7 @@ class MyCustomFilter extends javax.swing.filechooser.FileFilter {
 
 
 public class NewJFrame extends javax.swing.JFrame {
+
 private ArrayList<java.io.File> filelist = new ArrayList<java.io.File>(); //this is for storing the list of existing labs to look for
 
 String labdir = System.getenv("LABTAINER_DIR");
@@ -344,7 +347,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             System.out.println("problem accessing file labname.txt");
         }
             
-    
+        
         
         
         
@@ -353,10 +356,32 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         keywords.revalidate();
         keywords.repaint();
         
+        try{
+        InputStream inputStream = brokenJavaNaming("labtainer5-sm.png");
+        ImageIcon logoImg = new ImageIcon(ImageIO.read(inputStream));
+
+        this.setIconImage(logoImg.getImage());
+        logo.setIcon(logoImg);
+        } catch(IOException ex){
+           System.out.println("IOException from set icon"); 
+        }
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         CloseWindow();
+        
        
     }
+    private InputStream brokenJavaNaming(String resource){
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream = classloader.getResourceAsStream(resource);
+        if(inputStream == null){
+            inputStream = classloader.getResourceAsStream("makepackUI/src/main/resources/"+resource);
+            if(inputStream == null){
+                System.out.println("Could not find resource "+resource);
+            }
+        }
+        return inputStream;
+    } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -388,22 +413,25 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         labpacktextbox = new javax.swing.JTextArea();
-        KeyPane = new javax.swing.JScrollPane();
-        keywords = new javax.swing.JList<>();
-        LablistlPane = new javax.swing.JScrollPane();
-        lablist = new javax.swing.JList<>();
+        jPanel4 = new javax.swing.JPanel();
         labsPane = new javax.swing.JScrollPane();
         labs_in_labpack = new javax.swing.JList<>();
-        labdescriptionPane = new javax.swing.JScrollPane();
-        description_box = new javax.swing.JTextPane();
         labnotePane = new javax.swing.JScrollPane();
         notes_box = new javax.swing.JTextPane();
-        FindButton = new javax.swing.JButton();
-        ClearButton = new javax.swing.JButton();
-        RemoveButton = new javax.swing.JButton();
         AddNoteButton = new javax.swing.JButton();
-        Move_Up_Button = new javax.swing.JButton();
+        RemoveButton = new javax.swing.JButton();
         Move_Down_Button = new javax.swing.JButton();
+        Move_Up_Button = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        labdescriptionPane = new javax.swing.JScrollPane();
+        description_box = new javax.swing.JTextPane();
+        ClearButton = new javax.swing.JButton();
+        LablistlPane = new javax.swing.JScrollPane();
+        lablist = new javax.swing.JList<>();
+        KeyPane = new javax.swing.JScrollPane();
+        keywords = new javax.swing.JList<>();
+        FindButton = new javax.swing.JButton();
+        logo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         OpenButton = new javax.swing.JMenuItem();
@@ -613,33 +641,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("makepack");
 
-        KeyPane.setBorder(javax.swing.BorderFactory.createTitledBorder("keywords"));
-
-        keywords.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        KeyPane.setViewportView(keywords);
-
-        LablistlPane.setBorder(javax.swing.BorderFactory.createTitledBorder("lab list"));
-
-        lablist.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        lablist.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lablistMouseClicked(evt);
-            }
-        });
-        lablist.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lablistValueChanged(evt);
-            }
-        });
-        LablistlPane.setViewportView(lablist);
+        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         labsPane.setBorder(javax.swing.BorderFactory.createTitledBorder("labs in labpack"));
 
@@ -655,23 +657,13 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         });
         labsPane.setViewportView(labs_in_labpack);
 
-        labdescriptionPane.setBorder(javax.swing.BorderFactory.createTitledBorder("lab description"));
-        labdescriptionPane.setViewportView(description_box);
-
         labnotePane.setBorder(javax.swing.BorderFactory.createTitledBorder("notes"));
         labnotePane.setViewportView(notes_box);
 
-        FindButton.setText("Find");
-        FindButton.addActionListener(new java.awt.event.ActionListener() {
+        AddNoteButton.setText("Save");
+        AddNoteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FindButtonActionPerformed(evt);
-            }
-        });
-
-        ClearButton.setText("Clear");
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
+                AddNoteButtonActionPerformed(evt);
             }
         });
 
@@ -682,10 +674,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             }
         });
 
-        AddNoteButton.setText("Save");
-        AddNoteButton.addActionListener(new java.awt.event.ActionListener() {
+        Move_Down_Button.setText("\\/");
+        Move_Down_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddNoteButtonActionPerformed(evt);
+                Move_Down_ButtonActionPerformed(evt);
             }
         });
 
@@ -696,12 +688,140 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 }
             });
 
-            Move_Down_Button.setText("\\/");
-            Move_Down_Button.addActionListener(new java.awt.event.ActionListener() {
+            javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+            jPanel4.setLayout(jPanel4Layout);
+            jPanel4Layout.setHorizontalGroup(
+                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(24, 24, 24)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labnotePane)
+                        .addComponent(AddNoteButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                            .addComponent(labsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Move_Down_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Move_Up_Button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(RemoveButton))))
+                    .addContainerGap())
+            );
+            jPanel4Layout.setVerticalGroup(
+                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addComponent(Move_Up_Button)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(Move_Down_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(176, 176, 176)
+                            .addComponent(RemoveButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(labsPane)
+                            .addGap(30, 30, 30)))
+                    .addComponent(labnotePane, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(AddNoteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(23, 23, 23))
+            );
+
+            jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+            labdescriptionPane.setBorder(javax.swing.BorderFactory.createTitledBorder("lab description"));
+            labdescriptionPane.setViewportView(description_box);
+
+            ClearButton.setText("Clear");
+            ClearButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Move_Down_ButtonActionPerformed(evt);
+                    ClearButtonActionPerformed(evt);
                 }
             });
+
+            LablistlPane.setBorder(javax.swing.BorderFactory.createTitledBorder("lab list"));
+
+            lablist.setModel(new javax.swing.AbstractListModel<String>() {
+                String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+                public int getSize() { return strings.length; }
+                public String getElementAt(int i) { return strings[i]; }
+            });
+            lablist.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    lablistMouseClicked(evt);
+                }
+            });
+            lablist.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+                public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                    lablistValueChanged(evt);
+                }
+            });
+            LablistlPane.setViewportView(lablist);
+
+            KeyPane.setBorder(javax.swing.BorderFactory.createTitledBorder("keywords"));
+
+            keywords.setModel(new javax.swing.AbstractListModel<String>() {
+                String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+                public int getSize() { return strings.length; }
+                public String getElementAt(int i) { return strings[i]; }
+            });
+            KeyPane.setViewportView(keywords);
+
+            FindButton.setText("Find");
+            FindButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    FindButtonActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+            jPanel5.setLayout(jPanel5Layout);
+            jPanel5Layout.setHorizontalGroup(
+                jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(labdescriptionPane)
+                            .addContainerGap())
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(KeyPane)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(FindButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(83, 83, 83)))
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(ClearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 94, Short.MAX_VALUE))
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(LablistlPane)
+                                    .addGap(6, 6, 6))))))
+            );
+            jPanel5Layout.setVerticalGroup(
+                jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(LablistlPane)
+                        .addComponent(KeyPane))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addGap(12, 12, 12)
+                            .addComponent(FindButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(ClearButton)))
+                    .addGap(18, 18, 18)
+                    .addComponent(labdescriptionPane)
+                    .addGap(30, 30, 30))
+            );
+
+            logo.setText("jLabel17");
 
             jMenu1.setText("File");
 
@@ -782,68 +902,25 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labdescriptionPane)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(KeyPane)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(FindButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)))
-                            .addGap(7, 7, 7)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(ClearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE))
-                                .addComponent(LablistlPane))))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(RemoveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(labnotePane, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                                            .addComponent(AddNoteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(14, 14, 14))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(1, 1, 1)
-                                    .addComponent(labsPane)
-                                    .addGap(18, 18, 18)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(Move_Down_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Move_Up_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap())
+                    .addContainerGap()
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(28, 28, 28)
+                    .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(22, 22, 22))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(22, 22, 22)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(LablistlPane)
-                        .addComponent(labsPane)
-                        .addComponent(KeyPane)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(Move_Up_Button)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(Move_Down_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(FindButton)
-                        .addComponent(ClearButton)
-                        .addComponent(RemoveButton))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labdescriptionPane, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
-                        .addComponent(labnotePane, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(AddNoteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(96, 96, 96))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(102, 102, 102)
+                    .addComponent(logo)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
             pack();
@@ -1254,6 +1331,8 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> keywords;
@@ -1266,6 +1345,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JList<String> labs_in_labpack;
     private javax.swing.JMenuItem list_labpacks;
     private javax.swing.JDialog listlabpacks;
+    private javax.swing.JLabel logo;
     private javax.swing.JTextPane notes_box;
     private javax.swing.JDialog order_and_description;
     private javax.swing.JButton save_OandD;
