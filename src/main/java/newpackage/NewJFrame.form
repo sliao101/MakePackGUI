@@ -301,11 +301,16 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
+            <Property name="mnemonic" type="int" value="70"/>
             <Property name="text" type="java.lang.String" value="File"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="OpenButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+O"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Open"/>
               </Properties>
               <Events>
@@ -314,6 +319,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="NewButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+N"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="New"/>
               </Properties>
               <Events>
@@ -322,6 +330,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SaveButton">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Save"/>
               </Properties>
               <Events>
@@ -332,11 +343,15 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
+            <Property name="mnemonic" type="int" value="69"/>
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="Order_Description">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+D"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Order &amp; Description"/>
               </Properties>
               <Events>
@@ -347,11 +362,15 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="ViewButton">
           <Properties>
+            <Property name="mnemonic" type="int" value="86"/>
             <Property name="text" type="java.lang.String" value="View"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="list_labpacks">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+L"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="labpacks"/>
               </Properties>
               <Events>
@@ -360,11 +379,15 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="ChangeFont">
               <Properties>
+                <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Font Size"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="InreaseFont">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+EQUALS"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Increase"/>
                   </Properties>
                   <Events>
@@ -373,6 +396,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+MINUS"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Decrease"/>
                   </Properties>
                   <Events>
@@ -550,6 +576,7 @@
         <Component class="javax.swing.JButton" name="AddNoteButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Save"/>
+            <Property name="toolTipText" type="java.lang.String" value="This saves chnages to any notes for a lab."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddNoteButtonActionPerformed"/>
@@ -558,6 +585,7 @@
         <Component class="javax.swing.JButton" name="RemoveButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove"/>
+            <Property name="toolTipText" type="java.lang.String" value="This button removes any selected labs from the labpack."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoveButtonActionPerformed"/>
@@ -566,6 +594,7 @@
         <Component class="javax.swing.JButton" name="Move_Down_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="\u005c/" containsInvalidXMLChars="true"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move a lab down in the labpack."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Move_Down_ButtonActionPerformed"/>
@@ -574,6 +603,7 @@
         <Component class="javax.swing.JButton" name="Move_Up_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="/\u005c" containsInvalidXMLChars="true"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move a lab up in the labpack."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Move_Up_ButtonActionPerformed"/>
@@ -670,6 +700,7 @@
         <Component class="javax.swing.JButton" name="ClearButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="toolTipText" type="java.lang.String" value="This refreshes the lab list so that user can see the list of all labs after find."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ClearButtonActionPerformed"/>
@@ -697,6 +728,7 @@
                     <StringItem index="4" value="Item 5"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Double click to add lab to labpack."/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lablistMouseClicked"/>
@@ -740,6 +772,7 @@
         <Component class="javax.swing.JButton" name="FindButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Find"/>
+            <Property name="toolTipText" type="java.lang.String" value="This button filters the lab list panel so that the lablist shows which labs have the selected keywords."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FindButtonActionPerformed"/>

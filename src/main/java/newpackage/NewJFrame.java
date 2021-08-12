@@ -661,6 +661,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         labnotePane.setViewportView(notes_box);
 
         AddNoteButton.setText("Save");
+        AddNoteButton.setToolTipText("This saves chnages to any notes for a lab.");
         AddNoteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddNoteButtonActionPerformed(evt);
@@ -668,6 +669,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         });
 
         RemoveButton.setText("Remove");
+        RemoveButton.setToolTipText("This button removes any selected labs from the labpack.");
         RemoveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RemoveButtonActionPerformed(evt);
@@ -675,6 +677,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         });
 
         Move_Down_Button.setText("\\/");
+        Move_Down_Button.setToolTipText("Move a lab down in the labpack.");
         Move_Down_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Move_Down_ButtonActionPerformed(evt);
@@ -682,6 +685,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         });
 
         Move_Up_Button.setText("/\\");
+            Move_Up_Button.setToolTipText("Move a lab up in the labpack.");
             Move_Up_Button.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Move_Up_ButtonActionPerformed(evt);
@@ -735,6 +739,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             labdescriptionPane.setViewportView(description_box);
 
             ClearButton.setText("Clear");
+            ClearButton.setToolTipText("This refreshes the lab list so that user can see the list of all labs after find.");
             ClearButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     ClearButtonActionPerformed(evt);
@@ -748,6 +753,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 public int getSize() { return strings.length; }
                 public String getElementAt(int i) { return strings[i]; }
             });
+            lablist.setToolTipText("Double click to add lab to labpack.");
             lablist.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     lablistMouseClicked(evt);
@@ -770,6 +776,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             KeyPane.setViewportView(keywords);
 
             FindButton.setText("Find");
+            FindButton.setToolTipText("This button filters the lab list panel so that the lablist shows which labs have the selected keywords.");
             FindButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     FindButtonActionPerformed(evt);
@@ -823,8 +830,11 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
             logo.setText("jLabel17");
 
+            jMenu1.setMnemonic('F');
             jMenu1.setText("File");
+            jMenu1.setToolTipText("");
 
+            OpenButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             OpenButton.setText("Open");
             OpenButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -833,6 +843,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             });
             jMenu1.add(OpenButton);
 
+            NewButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             NewButton.setText("New");
             NewButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -841,6 +852,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             });
             jMenu1.add(NewButton);
 
+            SaveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             SaveButton.setText("Save");
             SaveButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -851,8 +863,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
             jMenuBar1.add(jMenu1);
 
+            jMenu2.setMnemonic('E');
             jMenu2.setText("Edit");
 
+            Order_Description.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             Order_Description.setText("Order & Description");
             Order_Description.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -863,8 +877,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
             jMenuBar1.add(jMenu2);
 
+            ViewButton.setMnemonic('V');
             ViewButton.setText("View");
 
+            list_labpacks.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             list_labpacks.setText("labpacks");
             list_labpacks.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -873,8 +889,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             });
             ViewButton.add(list_labpacks);
 
+            ChangeFont.setMnemonic('S');
             ChangeFont.setText("Font Size");
 
+            InreaseFont.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_EQUALS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             InreaseFont.setText("Increase");
             InreaseFont.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -883,6 +901,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             });
             ChangeFont.add(InreaseFont);
 
+            jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
             jMenuItem3.setText("Decrease");
             jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1226,19 +1245,43 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     }//GEN-LAST:event_list_labpacksActionPerformed
 //Increase font size from font size menue item
     private void InreaseFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InreaseFontActionPerformed
+        ((javax.swing.border.TitledBorder) KeyPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,18));
+        ((javax.swing.border.TitledBorder) LablistlPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,18));
+        ((javax.swing.border.TitledBorder) labdescriptionPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,18));
+        ((javax.swing.border.TitledBorder) labsPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,18));
+        ((javax.swing.border.TitledBorder) labnotePane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,18));
         keywords.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         lablist.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         labs_in_labpack.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         description_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         notes_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        
+        
+        
     }//GEN-LAST:event_InreaseFontActionPerformed
 //Decrease font size from font size menue item
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        ((javax.swing.border.TitledBorder) KeyPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
+        ((javax.swing.border.TitledBorder) LablistlPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
+        ((javax.swing.border.TitledBorder) labdescriptionPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
+        ((javax.swing.border.TitledBorder) labsPane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
+        ((javax.swing.border.TitledBorder) labnotePane.getBorder()).
+    setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
         keywords.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         lablist.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         labs_in_labpack.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         description_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         notes_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
