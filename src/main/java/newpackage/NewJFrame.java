@@ -77,6 +77,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         list.setListData(data);
         
     }
+   
      //refresh is for the lablist model so the list of labs can be refreshed after clicking the clear button
      public void refresh(javax.swing.DefaultListModel<String> mode){
         mode.clear();
@@ -316,7 +317,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 while (Freader.hasNextLine()) {
                     String data = Freader.nextLine().trim();
                     
-                    if(keys.contains(data)==false){
+                    if(keys.contains(data)==false && data.length()!=0){
                         keys.addElement(data);
                     }
                 }
@@ -349,8 +350,12 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             
         
         
-        
-        
+        keywords.setFocusTraversalKeysEnabled(true);
+        lablist.setFocusTraversalKeysEnabled(true);
+        notes_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);// I dont want tabbing within the textpane notes
+        notes_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+        description_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);// I dont want tabbing within the textpane description
+        description_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
         lablist.revalidate();
         lablist.repaint();
         keywords.revalidate();
@@ -368,8 +373,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         CloseWindow();
         
-       
+        
+        
     }
+    
     private InputStream brokenJavaNaming(String resource){
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream inputStream = classloader.getResourceAsStream(resource);
@@ -437,6 +444,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         OpenButton = new javax.swing.JMenuItem();
         NewButton = new javax.swing.JMenuItem();
         SaveButton = new javax.swing.JMenuItem();
+        QuitBUtton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         Order_Description = new javax.swing.JMenuItem();
         ViewButton = new javax.swing.JMenu();
@@ -446,6 +454,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         jMenuItem3 = new javax.swing.JMenuItem();
 
         fileChooser.setCurrentDirectory(new java.io.File("/home/student/labtainer/trunk/labpacks"));
+        fileChooser.setFileFilter(new MyCustomFilter());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Labpack"));
 
@@ -650,6 +659,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        labs_in_labpack.setNextFocusableComponent(Move_Up_Button);
         labs_in_labpack.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 labs_in_labpackValueChanged(evt);
@@ -658,10 +668,14 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         labsPane.setViewportView(labs_in_labpack);
 
         labnotePane.setBorder(javax.swing.BorderFactory.createTitledBorder("notes"));
+
+        notes_box.setFocusCycleRoot(false);
+        notes_box.setNextFocusableComponent(AddNoteButton);
         labnotePane.setViewportView(notes_box);
 
         AddNoteButton.setText("Save");
-        AddNoteButton.setToolTipText("This saves chnages to any notes for a lab.");
+        AddNoteButton.setToolTipText("This saves changes to any notes for a lab.");
+        AddNoteButton.setNextFocusableComponent(description_box);
         AddNoteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddNoteButtonActionPerformed(evt);
@@ -670,6 +684,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
         RemoveButton.setText("Remove");
         RemoveButton.setToolTipText("This button removes any selected labs from the labpack.");
+        RemoveButton.setNextFocusableComponent(notes_box);
         RemoveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RemoveButtonActionPerformed(evt);
@@ -678,6 +693,8 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
         Move_Down_Button.setText("\\/");
         Move_Down_Button.setToolTipText("Move a lab down in the labpack.");
+        Move_Down_Button.setName(""); // NOI18N
+        Move_Down_Button.setNextFocusableComponent(RemoveButton);
         Move_Down_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Move_Down_ButtonActionPerformed(evt);
@@ -686,6 +703,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
         Move_Up_Button.setText("/\\");
             Move_Up_Button.setToolTipText("Move a lab up in the labpack.");
+            Move_Up_Button.setNextFocusableComponent(Move_Down_Button);
             Move_Up_Button.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Move_Up_ButtonActionPerformed(evt);
@@ -702,13 +720,14 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                         .addComponent(labnotePane)
                         .addComponent(AddNoteButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(labsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                            .addComponent(labsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Move_Down_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Move_Up_Button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(RemoveButton))))
+                                .addComponent(RemoveButton))
+                            .addGap(5, 5, 5)))
                     .addContainerGap())
             );
             jPanel4Layout.setVerticalGroup(
@@ -736,10 +755,14 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
             labdescriptionPane.setBorder(javax.swing.BorderFactory.createTitledBorder("lab description"));
+
+            description_box.setFocusCycleRoot(false);
+            description_box.setNextFocusableComponent(keywords);
             labdescriptionPane.setViewportView(description_box);
 
             ClearButton.setText("Clear");
             ClearButton.setToolTipText("This refreshes the lab list so that user can see the list of all labs after find.");
+            ClearButton.setNextFocusableComponent(labs_in_labpack);
             ClearButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     ClearButtonActionPerformed(evt);
@@ -754,9 +777,15 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 public String getElementAt(int i) { return strings[i]; }
             });
             lablist.setToolTipText("Double click to add lab to labpack.");
+            lablist.setNextFocusableComponent(ClearButton);
             lablist.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     lablistMouseClicked(evt);
+                }
+            });
+            lablist.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    lablistKeyPressed(evt);
                 }
             });
             lablist.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -773,10 +802,13 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 public int getSize() { return strings.length; }
                 public String getElementAt(int i) { return strings[i]; }
             });
+            keywords.setFocusCycleRoot(true);
+            keywords.setNextFocusableComponent(FindButton);
             KeyPane.setViewportView(keywords);
 
             FindButton.setText("Find");
             FindButton.setToolTipText("This button filters the lab list panel so that the lablist shows which labs have the selected keywords.");
+            FindButton.setNextFocusableComponent(lablist);
             FindButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     FindButtonActionPerformed(evt);
@@ -804,7 +836,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addComponent(ClearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 94, Short.MAX_VALUE))
+                                    .addGap(0, 92, Short.MAX_VALUE))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addComponent(LablistlPane)
                                     .addGap(6, 6, 6))))))
@@ -860,6 +892,15 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 }
             });
             jMenu1.add(SaveButton);
+
+            QuitBUtton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+            QuitBUtton.setText("Quit");
+            QuitBUtton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    QuitBUttonActionPerformed(evt);
+                }
+            });
+            jMenu1.add(QuitBUtton);
 
             jMenuBar1.add(jMenu1);
 
@@ -1023,7 +1064,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         //find a display labs with keywords that are selected.
         java.util.List<String> selectedlist = keywords.getSelectedValuesList();
         
-        System.out.println(selectedlist);
+        System.out.println("find keyword:"+selectedlist);
         lab.clear();
         
         for(int i=0; i<filelist.size(); i++) {
@@ -1283,6 +1324,23 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         notes_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+//this is another way of adding labs to labpack, through pressing the Enter key
+    private void lablistKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lablistKeyPressed
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+                {
+                    
+                    String name = lablist.getSelectedValue();
+                    
+                    if(labsadded.contains(name)==false) {
+                    labsadded.addElement(name);
+                    labnotes.put(name, "");
+            }
+                }
+    }//GEN-LAST:event_lablistKeyPressed
+
+    private void QuitBUttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBUttonActionPerformed
+        this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_QuitBUttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1352,6 +1410,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JMenuItem NewButton;
     private javax.swing.JMenuItem OpenButton;
     private javax.swing.JMenuItem Order_Description;
+    private javax.swing.JMenuItem QuitBUtton;
     private javax.swing.JButton RemoveButton;
     private javax.swing.JMenuItem SaveButton;
     private javax.swing.JTextField TextDescription;
