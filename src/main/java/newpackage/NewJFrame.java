@@ -10,6 +10,7 @@ package newpackage;
  * @author student
  */
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -356,6 +357,11 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         notes_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
         description_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);// I dont want tabbing within the textpane description
         description_box.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+        //for dialog text boxes
+        TextDescription.setFocusTraversalKeys(java.awt.KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        TextDescription.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+        TextDescription1.setFocusTraversalKeys(java.awt.KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        TextDescription1.setFocusTraversalKeys(java.awt.KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
         lablist.revalidate();
         lablist.repaint();
         keywords.revalidate();
@@ -403,11 +409,12 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         jPanel1 = new javax.swing.JPanel();
         Create = new javax.swing.JButton();
         TextName = new javax.swing.JTextField();
-        TextDescription = new javax.swing.JTextField();
         TextOrder = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TextDescription = new javax.swing.JTextArea();
         order_and_description = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
         save_OandD = new javax.swing.JButton();
@@ -451,10 +458,16 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         list_labpacks = new javax.swing.JMenuItem();
         ChangeFont = new javax.swing.JMenu();
         InreaseFont = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        DecreaseFont = new javax.swing.JMenuItem();
 
         fileChooser.setCurrentDirectory(new java.io.File("/home/student/labtainer/trunk/labpacks"));
         fileChooser.setFileFilter(new MyCustomFilter());
+
+        labpackinfo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                labpackinfoKeyPressed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Labpack"));
 
@@ -465,20 +478,12 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             }
         });
 
-        TextName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextNameActionPerformed(evt);
-            }
-        });
         TextName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextNameKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextNameKeyTyped(evt);
-            }
-        });
-
-        TextDescription.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextDescriptionActionPerformed(evt);
             }
         });
 
@@ -494,6 +499,10 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
         jLabel3.setText("Order:");
 
+        TextDescription.setColumns(20);
+        TextDescription.setRows(5);
+        jScrollPane3.setViewportView(TextDescription);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -503,14 +512,14 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TextDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                            .addComponent(TextOrder)
-                            .addComponent(TextName)))
+                            .addComponent(TextName, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+                            .addComponent(TextOrder, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Create)))
@@ -518,22 +527,22 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TextName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TextDescription, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(TextOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Create)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout labpackinfoLayout = new javax.swing.GroupLayout(labpackinfo.getContentPane());
@@ -568,6 +577,11 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
         TextDescription1.setColumns(20);
         TextDescription1.setRows(5);
+        TextDescription1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextDescription1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(TextDescription1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -580,7 +594,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(save_OandD))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -595,8 +609,8 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
                 .addGap(20, 20, 20)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addGap(9, 9, 9)
                 .addComponent(TextOrder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -619,6 +633,11 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         labpacktextbox.setColumns(20);
         labpacktextbox.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labpacktextbox.setRows(5);
+        labpacktextbox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                labpacktextboxKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(labpacktextbox);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -942,14 +961,14 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
             });
             ChangeFont.add(InreaseFont);
 
-            jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-            jMenuItem3.setText("Decrease");
-            jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            DecreaseFont.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+            DecreaseFont.setText("Decrease");
+            DecreaseFont.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jMenuItem3ActionPerformed(evt);
+                    DecreaseFontActionPerformed(evt);
                 }
             });
-            ChangeFont.add(jMenuItem3);
+            ChangeFont.add(DecreaseFont);
 
             ViewButton.add(ChangeFont);
 
@@ -1177,20 +1196,12 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
 
     }//GEN-LAST:event_CreateActionPerformed
 
-    private void TextNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextNameActionPerformed
-
     private void TextNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextNameKeyTyped
         char c = evt.getKeyChar();
         if(c == ' '){
             evt.consume();
         }
     }//GEN-LAST:event_TextNameKeyTyped
-
-    private void TextDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextDescriptionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextDescriptionActionPerformed
 
     private void TextOrderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextOrderKeyTyped
         char c = evt.getKeyChar();
@@ -1301,12 +1312,30 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         labs_in_labpack.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         description_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         notes_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        jLabel1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        jLabel2.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        jLabel3.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         
+        TextName.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        TextDescription.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        TextOrder.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         
+        jLabel5.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        jLabel6.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
         
+        TextDescription1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        TextOrder1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        labpacktextbox.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,18));
+        
+        FindButton.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
+        ClearButton.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
+        RemoveButton.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
+        AddNoteButton.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
+        Create.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
+        save_OandD.setFont(new java.awt.Font("Dialog",java.awt.Font.BOLD,12));
     }//GEN-LAST:event_InreaseFontActionPerformed
 //Decrease font size from font size menue item
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void DecreaseFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DecreaseFontActionPerformed
         ((javax.swing.border.TitledBorder) KeyPane.getBorder()).
     setTitleFont(new java.awt.Font("Arial", java.awt.Font.BOLD,12));
         ((javax.swing.border.TitledBorder) LablistlPane.getBorder()).
@@ -1322,8 +1351,29 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
         labs_in_labpack.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         description_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         notes_box.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        jLabel1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        jLabel2.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        jLabel3.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
         
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+        TextName.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        TextDescription.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        TextOrder.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        
+        jLabel5.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        jLabel6.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        
+        TextDescription1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        TextOrder1.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        labpacktextbox.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,14));
+        
+        FindButton.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        ClearButton.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        RemoveButton.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        AddNoteButton.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        Create.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        save_OandD.setFont(new java.awt.Font("Dialog",java.awt.Font.PLAIN,12));
+        
+    }//GEN-LAST:event_DecreaseFontActionPerformed
 //this is another way of adding labs to labpack, through pressing the Enter key
     private void lablistKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lablistKeyPressed
         if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
@@ -1341,6 +1391,38 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private void QuitBUttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBUttonActionPerformed
         this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_QuitBUttonActionPerformed
+
+    private void labpackinfoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_labpackinfoKeyPressed
+        int code = evt.getKeyCode();
+        if (code== KeyEvent.VK_ESCAPE){
+            System.out.print(code);
+            labpackinfo.setVisible(false);
+        }
+    }//GEN-LAST:event_labpackinfoKeyPressed
+//this will close the make new labpack dialog when you hit the Esc key while focused on name    
+    private void TextNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextNameKeyPressed
+        int code = evt.getKeyCode();
+        if (code== KeyEvent.VK_ESCAPE){
+            System.out.print(code);
+            labpackinfo.setVisible(false);
+        }
+    }//GEN-LAST:event_TextNameKeyPressed
+//this will close the description and order dialog when you hit the Esc key while focused on description
+    private void TextDescription1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextDescription1KeyPressed
+        int code = evt.getKeyCode();
+        if (code== KeyEvent.VK_ESCAPE){
+            System.out.print(code);
+            order_and_description.setVisible(false);
+        }
+    }//GEN-LAST:event_TextDescription1KeyPressed
+//this will close the list of labpacks dialog when you his Esc
+    private void labpacktextboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_labpacktextboxKeyPressed
+        int code = evt.getKeyCode();
+        if (code== KeyEvent.VK_ESCAPE){
+            System.out.print(code);
+            listlabpacks.setVisible(false);
+        }
+    }//GEN-LAST:event_labpacktextboxKeyPressed
 
     /**
      * @param args the command line arguments
@@ -1401,6 +1483,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JMenu ChangeFont;
     private javax.swing.JButton ClearButton;
     private javax.swing.JButton Create;
+    private javax.swing.JMenuItem DecreaseFont;
     private javax.swing.JButton FindButton;
     private javax.swing.JMenuItem InreaseFont;
     private javax.swing.JScrollPane KeyPane;
@@ -1413,7 +1496,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JMenuItem QuitBUtton;
     private javax.swing.JButton RemoveButton;
     private javax.swing.JMenuItem SaveButton;
-    private javax.swing.JTextField TextDescription;
+    private javax.swing.JTextArea TextDescription;
     private javax.swing.JTextArea TextDescription1;
     private javax.swing.JTextField TextName;
     private javax.swing.JTextField TextOrder;
@@ -1429,7 +1512,6 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1437,6 +1519,7 @@ private static java.util.HashMap<String, String> labnotes = new java.util.HashMa
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> keywords;
     private javax.swing.JScrollPane labdescriptionPane;
     private javax.swing.JList<String> lablist;
